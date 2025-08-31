@@ -503,6 +503,6 @@
 
 ## Моделирование структуры Базы Данных:
 ### Ссылка на просмотр изображения ER-диаграммы:
-![Image](https://github.com/PavelMahnyuk/BA-Practice/blob/main/ER-диаграмма.png?raw=true)
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.png)
 
 
