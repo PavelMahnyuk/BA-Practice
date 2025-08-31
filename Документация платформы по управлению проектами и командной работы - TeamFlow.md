@@ -503,11 +503,29 @@
 
 ## Моделирование структуры Базы Данных:
 ### Ссылка на просмотр изображения ER-диаграммы:
-![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.png)
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.pnghttps://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.png)
 
 ### [Ссылка на просмотр кода ER-диаграммы в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20ERD)
 
-### Описание сущностей и атрибутов
+### Описание сущностей и атрибутов в базе данных
+
+
+#### organizations
+Таблица организаций, которые используют платформу.
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| id | GUID | Уникальный идентификатор организации |
+| name | VARCHAR(300) | Название организации |
+| description | TEXT | Описание деятельности организации |
+| address | VARCHAR(500) | Полный адрес организации |
+| phone | VARCHAR(50) | Контактный телефон |
+| email | VARCHAR(255) | Корпоративный email |
+| website | VARCHAR(300) | Веб-сайт организации |
+| industry | VARCHAR(100) | Отрасль деятельности |
+| size | VARCHAR(50) | Размер организации (малая, средняя, крупная) |
+| created_at | TIMESTAMP | Дата регистрации организации |
+| updated_at | TIMESTAMP | Дата последнего обновления |
 
 #### users
 Основная таблица пользователей системы.
@@ -519,7 +537,6 @@
 | password_hash | VARCHAR(255) | Хэш пароля для аутентификации |
 | full_name | VARCHAR(200) | Полное имя пользователя |
 | role | VARCHAR(50) | Роль в системе (Менеджер проекта / Участник команды) |
-| organization | VARCHAR(200) | Название организации/компании |
 | position | VARCHAR(100) | Должность пользователя |
 | department | VARCHAR(100) | Отдел в организации |
 | timezone | VARCHAR(50) | Часовой пояс пользователя |
@@ -535,6 +552,7 @@
 | Поле | Тип | Описание |
 |------|-----|----------|
 | id | GUID | Уникальный идентификатор проекта |
+| organization_id | GUID | ID организации-владельца проекта (FK) |
 | name | VARCHAR(200) | Название проекта |
 | description | TEXT | Детальное описание проекта и его целей |
 | start_date | DATE | Дата планируемого начала проекта |
@@ -743,3 +761,18 @@
 | related_entity_id | GUID | ID связанной сущности |
 | is_read | BOOLEAN | Признак прочтения |
 | sent_at | TIMESTAMP | Дата отправки уведомления |
+
+#### audit_log
+Таблица журнала действий пользователей для аудита системы.
+
+| Поле | Тип | Описание |
+|------|-----|----------|
+| id | GUID | Уникальный идентификатор записи в журнале |
+| user_id | GUID | ID пользователя, выполнившего действие (FK) |
+| entity_type | VARCHAR(50) | Тип сущности (project, task, document, meeting, etc.) |
+| entity_id | GUID | ID конкретной сущности, с которой выполнено действие |
+| action_type | VARCHAR(50) | Тип действия (CREATE, UPDATE, DELETE) |
+| old_values | TEXT | Старые значения полей (JSON формат) |
+| new_values | TEXT | Новые значения полей (JSON формат) |
+| description | VARCHAR(500) | Краткое описание выполненного действия |
+| created_at | TIMESTAMP | Дата и время выполнения действия |
