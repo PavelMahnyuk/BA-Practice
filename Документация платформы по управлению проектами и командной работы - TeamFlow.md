@@ -498,3 +498,11 @@
 
 ## Моделирование бизнес-процесса создания задачи в проекте на платформе TeamFlow в нотации BPMN:
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/Картинка%20BPMN.png)
+
+<br/><br/>
+
+## Моделирование структуры Базы Данных:
+### Ссылка на просмотр изображения ER-диаграммы:
+![Image](https://github.com/PavelMahnyuk/BA-Practice/blob/main/ER-диаграмма.png?raw=true)
+
+
