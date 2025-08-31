@@ -1,0 +1,235 @@
+@startuml ERD
+!define table(x) class x << (T,#999999) >>
+!define primary_key(x) <u>x</u>
+
+table(users) {
+  primary_key(id): GUID
+  email: VARCHAR(255)
+  password_hash: VARCHAR(255)
+  full_name: VARCHAR(200)
+  role: VARCHAR(50)
+  organization: VARCHAR(200)
+  position: VARCHAR(100)
+  department: VARCHAR(100)
+  timezone: VARCHAR(50)
+  avatar_url: VARCHAR(500)
+  is_active: BOOLEAN
+  email_verified: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(projects) {
+  primary_key(id): GUID
+  name: VARCHAR(200)
+  description: TEXT
+  start_date: DATE
+  end_date: DATE
+  priority: VARCHAR(20)
+  category: VARCHAR(100)
+  budget: DECIMAL(15,2)
+  success_criteria: TEXT
+  status: VARCHAR(50)
+  created_by: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(project_members) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  user_id: GUID [FK]
+  role: VARCHAR(100)
+  permissions: VARCHAR(100)
+  joined_at: TIMESTAMP
+}
+
+table(tasks) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  name: VARCHAR(300)
+  description: TEXT
+  priority: VARCHAR(20)
+  status: VARCHAR(50)
+  start_date: DATE
+  due_date: DATE
+  estimated_hours: INT
+  acceptance_criteria: TEXT
+  created_by: GUID [FK]
+  assigned_to: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(task_dependencies) {
+  primary_key(id): GUID
+  predecessor_task_id: GUID [FK]
+  successor_task_id: GUID [FK]
+  dependency_type: VARCHAR(50)
+  created_at: TIMESTAMP
+}
+
+table(documents) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  task_id: GUID [FK]
+  name: VARCHAR(300)
+  description: TEXT
+  file_url: VARCHAR(500)
+  file_size: BIGINT
+  file_type: VARCHAR(50)
+  category: VARCHAR(100)
+  version: INT
+  tags: VARCHAR(500)
+  access_level: VARCHAR(50)
+  uploaded_by: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(document_versions) {
+  primary_key(id): GUID
+  document_id: GUID [FK]
+  version_number: INT
+  file_url: VARCHAR(500)
+  changes_description: TEXT
+  created_by: GUID [FK]
+  created_at: TIMESTAMP
+}
+
+table(meetings) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  title: VARCHAR(300)
+  description: TEXT
+  meeting_type: VARCHAR(50)
+  start_time: TIMESTAMP
+  end_time: TIMESTAMP
+  location: VARCHAR(300)
+  video_link: VARCHAR(500)
+  agenda: TEXT
+  status: VARCHAR(50)
+  created_by: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(meeting_participants) {
+  primary_key(id): GUID
+  meeting_id: GUID [FK]
+  user_id: GUID [FK]
+  participation_type: VARCHAR(50)
+  response_status: VARCHAR(50)
+  joined_at: TIMESTAMP
+  left_at: TIMESTAMP
+}
+
+table(chats) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  name: VARCHAR(200)
+  chat_type: VARCHAR(50)
+  description: TEXT
+  is_private: BOOLEAN
+  created_by: GUID [FK]
+  created_at: TIMESTAMP
+}
+
+table(chat_members) {
+  primary_key(id): GUID
+  chat_id: GUID [FK]
+  user_id: GUID [FK]
+  joined_at: TIMESTAMP
+  role: VARCHAR(50)
+}
+
+table(messages) {
+  primary_key(id): GUID
+  chat_id: GUID [FK]
+  user_id: GUID [FK]
+  task_id: GUID [FK]
+  message_text: TEXT
+  message_type: VARCHAR(50)
+  attachment_url: VARCHAR(500)
+  reply_to_message_id: GUID [FK]
+  is_edited: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(discussions) {
+  primary_key(id): GUID
+  project_id: GUID [FK]
+  task_id: GUID [FK]
+  title: VARCHAR(300)
+  description: TEXT
+  status: VARCHAR(50)
+  created_by: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(discussion_comments) {
+  primary_key(id): GUID
+  discussion_id: GUID [FK]
+  user_id: GUID [FK]
+  comment_text: TEXT
+  attachment_url: VARCHAR(500)
+  reply_to_comment_id: GUID [FK]
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(notifications) {
+  primary_key(id): GUID
+  user_id: GUID [FK]
+  notification_type: VARCHAR(100)
+  title: VARCHAR(300)
+  message: TEXT
+  related_entity_type: VARCHAR(50)
+  related_entity_id: GUID
+  is_read: BOOLEAN
+  sent_at: TIMESTAMP
+}
+
+users ||--o{ projects : создает
+users ||--o{ project_members : участвует_в
+projects ||--o{ project_members : имеет_участников
+
+projects ||--o{ tasks : содержит
+users ||--o{ tasks : создает
+users ||--o{ tasks : назначен_на
+tasks ||--o{ task_dependencies : имеет_предшественника
+tasks ||--o{ task_dependencies : имеет_последователя
+
+projects ||--o{ documents : содержит
+tasks ||--o{ documents : связан_с
+users ||--o{ documents : загружает
+documents ||--o{ document_versions : имеет_версии
+users ||--o{ document_versions : создает_версию
+
+projects ||--o{ meetings : проводит
+users ||--o{ meetings : организует
+meetings ||--o{ meeting_participants : включает
+users ||--o{ meeting_participants : посещает
+
+projects ||--o{ chats : имеет_чаты
+users ||--o{ chats : создает
+chats ||--o{ chat_members : имеет_участников
+users ||--o{ chat_members : присоединяется
+
+chats ||--o{ messages : содержит
+users ||--o{ messages : отправляет
+tasks ||--o{ messages : обсуждает
+messages ||--o{ messages : отвечает_на
+
+projects ||--o{ discussions : проводит
+tasks ||--o{ discussions : обсуждает
+users ||--o{ discussions : создает
+discussions ||--o{ discussion_comments : имеет_комментарии
+users ||--o{ discussion_comments : пишет
+discussion_comments ||--o{ discussion_comments : отвечает_на
+
+users ||--o{ notifications : получает
+
+@enduml
