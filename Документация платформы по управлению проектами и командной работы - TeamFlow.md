@@ -505,4 +505,5 @@
 ### Ссылка на просмотр изображения ER-диаграммы:
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.png)
 
+### [Ссылка на просмотр кода ER-диаграммы в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20ERD)
 
