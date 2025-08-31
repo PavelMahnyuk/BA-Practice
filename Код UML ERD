@@ -2,13 +2,26 @@
 !define table(x) class x << (T,#999999) >>
 !define primary_key(x) <u>x</u>
 
+table(organizations) {
+  primary_key(id): GUID
+  name: VARCHAR(300)
+  description: TEXT
+  address: VARCHAR(500)
+  phone: VARCHAR(50)
+  email: VARCHAR(255)
+  website: VARCHAR(300)
+  industry: VARCHAR(100)
+  size: VARCHAR(50)
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
 table(users) {
   primary_key(id): GUID
   email: VARCHAR(255)
   password_hash: VARCHAR(255)
   full_name: VARCHAR(200)
   role: VARCHAR(50)
-  organization: VARCHAR(200)
   position: VARCHAR(100)
   department: VARCHAR(100)
   timezone: VARCHAR(50)
@@ -21,6 +34,7 @@ table(users) {
 
 table(projects) {
   primary_key(id): GUID
+  organization_id: GUID [FK]
   name: VARCHAR(200)
   description: TEXT
   start_date: DATE
@@ -230,6 +244,21 @@ discussions ||--o{ discussion_comments : имеет_комментарии
 users ||--o{ discussion_comments : пишет
 discussion_comments ||--o{ discussion_comments : отвечает_на
 
+table(audit_log) {
+  primary_key(id): GUID
+  user_id: GUID [FK]
+  entity_type: VARCHAR(50)
+  entity_id: GUID
+  action_type: VARCHAR(50)
+  old_values: TEXT
+  new_values: TEXT
+  description: VARCHAR(500)
+  created_at: TIMESTAMP
+}
+
 users ||--o{ notifications : получает
+organizations ||--o{ projects : владеет
+users ||--o{ projects : создает
+users ||--o{ audit_log : выполняет_действия
 
 @enduml
