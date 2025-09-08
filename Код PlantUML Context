@@ -1,0 +1,44 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title C4 Context - TeamFlow Platform
+
+Person(project_manager, "Project Manager", "Менеджер проекта, который создает проекты, назначает задачи, контролирует выполнение")
+Person(team_member, "Team Member", "Участник команды, который выполняет задачи, участвует в обсуждениях и встречах")
+
+System_Boundary(teamflow_platform, "TeamFlow Platform") {
+
+    System(user_service, "User Service", "Управление пользователями и профилями")
+    System(organization_service, "Organization Service", "Управление организациями")
+    System(auth_service, "Auth Service", "Аутентификация и авторизация пользователей")
+    System(project_service, "Project Service", "Управление проектами")
+    System(task_service, "Task Service", "Управление задачами и зависимостями")
+    System(document_service, "Document Service", "Управление документами и версиями")
+    System(meeting_service, "Meeting Service", "Управление встречами и событиями")
+    System(calendar_service, "Calendar Service", "Календарное планирование и интеграция")
+    System(communication_system, "Communication System", "Чаты, обсуждения и видеоконференции")
+    System(notification_service, "Notification Service", "Управление уведомлениями")
+    System(audit_service, "Audit Service", "Журналирование действий пользователей")
+  
+}
+
+System_Ext(email_service, "Email Service", "Отправка email уведомлений о проектах, задачах, встречах")
+System_Ext(file_storage, "Cloud File Storage", "Облачное хранилище документов (S3)")
+System_Ext(external_calendars, "External Calendars", "Внешние календарные сервисы (Google Calendar, Outlook)")
+System_Ext(oauth_providers, "OAuth Providers", "Поставщики OAuth аутентификации (Google, Microsoft)")
+
+Rel(project_manager, teamflow_platform, "Управляет проектами и задачами")
+Rel(team_member, teamflow_platform, "Выполняет задачи и участвует в коммуникации")
+Rel(teamflow_platform, email_service, "Отправляет уведомления", "SMTP")
+Rel(teamflow_platform, file_storage, "Хранит и получает документы", "HTTPS/API")
+Rel(teamflow_platform, external_calendars, "Синхронизирует события", "API")
+Rel(teamflow_platform, oauth_providers, "Аутентификация пользователей", "OAuth 2.0")
+
+UpdateElementStyle(teamflow_platform, $bgColor="lightgreen")
+UpdateElementStyle(teamflow_platform, $bgColor="lightgreen")
+UpdateElementStyle(email_service, $bgColor="lightblue")
+UpdateElementStyle(file_storage, $bgColor="lightblue")
+UpdateElementStyle(external_calendars, $bgColor="lightblue")
+UpdateElementStyle(oauth_providers, $bgColor="lightblue")
+
+@enduml
