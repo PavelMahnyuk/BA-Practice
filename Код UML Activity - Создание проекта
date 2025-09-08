@@ -1,0 +1,59 @@
+@startuml
+title Создание проекта в TeamFlow
+
+actor "Project Manager" as PM
+participant "Web App" as WA
+participant "Backend System" as BS
+participant "Database" as DB
+participant "Email Service" as ES
+
+PM -> WA: Открывает форму создания проекта
+activate WA
+
+WA -> BS: POST /auth/validate (token)
+activate BS
+BS -> DB: Проверяет сессию пользователя
+activate DB
+DB --> BS: Данные пользователя
+deactivate DB
+BS --> WA: Аутентификация успешна
+deactivate BS
+
+WA -> PM: Отображает форму проекта
+PM -> WA: Заполняет данные проекта\n(название, описание, даты, участники)
+
+WA -> BS: POST /projects (данные проекта)
+activate BS
+
+BS -> DB: INSERT в таблицу projects
+activate DB
+DB --> BS: ID нового проекта
+deactivate DB
+
+BS -> DB: INSERT в таблицу project_members\n(добавление участников)
+activate DB
+DB --> BS: Участники добавлены
+deactivate DB
+
+BS -> DB: INSERT в таблицу прочих данных по проекту
+activate DB
+DB --> BS: Данные добавлены
+deactivate DB
+
+BS -> DB: INSERT в таблицу audit_log\n(логирование создания проекта)
+activate DB
+DB --> BS: Действие залогировано
+deactivate DB
+
+BS -> ES: Отправить уведомления участникам\n(данные проекта, список участников)
+activate ES
+ES --> BS: Уведомления отправлены
+deactivate ES
+
+BS --> WA: Проект создан успешно\n(ID проекта, статус)
+deactivate BS
+
+WA -> PM: Отображает сообщение об успехе\nи перенаправляет на страницу проекта
+deactivate WA
+
+@enduml
