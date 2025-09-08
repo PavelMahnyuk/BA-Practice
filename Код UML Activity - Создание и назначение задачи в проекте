@@ -1,0 +1,69 @@
+@startuml
+title Создание и назначение задачи в TeamFlow
+
+actor "Project Manager" as PM
+participant "Web App" as WA
+participant "Backend System" as BS
+participant "Database" as DB
+participant "Email Service" as ES
+participant "File Storage" as FS
+
+PM -> WA: Открывает проект и нажимает "Создать задачу"
+activate WA
+
+WA -> BS: GET /projects/{id}/members\n(получение списка участников)
+activate BS
+BS -> DB: SELECT project_members WHERE project_id
+activate DB
+DB --> BS: Список участников проекта
+deactivate DB
+BS --> WA: Участники проекта
+deactivate BS
+
+WA -> PM: Отображает форму создания задачи\nсо списком исполнителей
+PM -> WA: Заполняет задачу\n(название, описание, приоритет,\nсроки, исполнитель, файлы)
+
+alt Если прикреплены файлы
+    WA -> FS: POST /upload (файлы)
+    activate FS
+    FS --> WA: URLs загруженных файлов
+    deactivate FS
+end
+
+WA -> BS: POST /tasks (данные задачи + URLs файлов)
+activate BS
+
+BS -> DB: Проверяет права на создание задач\nв проекте
+activate DB
+DB --> BS: Права подтверждены
+deactivate DB
+
+BS -> DB: INSERT в таблицу tasks
+activate DB
+DB --> BS: ID новой задачи
+deactivate DB
+
+alt Если есть файлы
+    BS -> DB: INSERT в таблицу documents\n(связывание файлов с задачей)
+    activate DB
+    DB --> BS: Документы привязаны
+    deactivate DB
+end
+
+BS -> DB: INSERT в таблицу audit_log\n(логирование создания задачи)
+activate DB
+DB --> BS: Действие залогировано
+deactivate DB
+
+BS -> ES: Уведомить назначенного исполнителя\n(данные задачи, дедлайн)
+activate ES
+ES --> BS: Уведомление отправлено
+deactivate ES
+
+BS --> WA: Задача создана успешно\n(ID задачи, статус)
+deactivate BS
+
+WA -> PM: Отображает созданную задачу\nв списке задач проекта
+deactivate WA
+
+@enduml
