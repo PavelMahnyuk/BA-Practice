@@ -797,3 +797,18 @@
 | new_values | TEXT | Новые значения полей (JSON формат) |
 | description | VARCHAR(500) | Краткое описание выполненного действия |
 | created_at | TIMESTAMP | Дата и время выполнения действия |
+
+<br/><br/>
+
+## Моделирование архитектуры системы:
+### С4 - Диаграмма контекста
+### Ссылка на просмотр изображения С4 Контекста:
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/C4%20Context.png)
+
+### [Ссылка на просмотр кода С4 Контекста в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Context)
+
+### С4 - Диаграмма контейнера
+### Ссылка на просмотр изображения С4 Контейнера:
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/C4%20Container.png)
+
+### [Ссылка на просмотр кода С4 Контейнера в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Container)
