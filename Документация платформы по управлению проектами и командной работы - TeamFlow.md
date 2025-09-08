@@ -812,3 +812,14 @@
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/C4%20Container.png)
 
 ### [Ссылка на просмотр кода С4 Контейнера в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Container)
+
+## Диаграммы последовательности:
+### Диаграмма последовательности, показывающая процесс создания проекта
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/UML%20Activity%20-%20Создание%20проекта.png)
+
+### [Ссылка на просмотр кода Диаграммы последовательности создания проекта в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Activity%20-%20Создание%20проекта)
+
+### Диаграмма последовательности, показывающая процесс создания проекта
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/UML%20Activity%20-%20Создание%20и%20назначение%20задачи%20в%20проекте.png)
+
+### [Ссылка на просмотр кода Диаграммы последовательности создания и назначения задачи в проекте в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Activity%20-%20Создание%20и%20назначение%20задачи%20в%20проекте)
