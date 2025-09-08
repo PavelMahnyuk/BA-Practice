@@ -1,0 +1,107 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title C4 Container - TeamFlow Platform
+
+Person(project_manager, "Project Manager", "Менеджер проекта")
+Person(team_member, "Team Member", "Участник команды")
+
+System_Boundary(teamflow_platform, "TeamFlow Platform") {
+  Container(web_app, "Web Application", "React", "Веб-интерфейс для управления проектами и командной работы")
+  
+  Container(main_api_gateway, "Main API Gateway", "Nginx", "Центральная точка входа для всех API запросов")
+  
+  System_Boundary(user_org_system, "User & Organization System") {
+    Container(user_org_gateway, "User/Org API Gateway", "Nginx", "API Gateway для пользователей и организаций")
+    Container(user_service, "User Service", "Node.js", "Управление пользователями и профилями")
+    Container(organization_service, "Organization Service", "Node.js", "Управление организациями")
+    Container(auth_service, "Auth Service", "Node.js", "Аутентификация и авторизация")
+    ContainerDb(user_org_db, "User/Org Database", "PostgreSQL", "Данные пользователей и организаций")
+  }
+  
+  System_Boundary(project_system, "Project Management System") {
+    Container(project_gateway, "Project API Gateway", "Nginx", "API Gateway для проектов и задач")
+    Container(project_service, "Project Service", "Node.js", "Управление проектами")
+    Container(task_service, "Task Service", "Node.js", "Управление задачами и зависимостями")
+    ContainerDb(project_db, "Project Database", "PostgreSQL", "Данные проектов и задач")
+  }
+  
+  System_Boundary(document_system, "Document Management System") {
+    Container(document_service, "Document Service", "Node.js", "Управление документами и версиями")
+    ContainerDb(document_db, "Document Database", "PostgreSQL", "Метаданные документов")
+  }
+  
+  System_Boundary(meeting_system, "Meeting & Calendar System") {
+    Container(meeting_service, "Meeting Service", "Node.js", "Управление встречами и событиями")
+    Container(calendar_service, "Calendar Service", "Node.js", "Календарное планирование")
+    ContainerDb(meeting_db, "Meeting Database", "PostgreSQL", "Данные встреч и календарных событий")
+  }
+  
+  System_Boundary(communication_system, "Communication System") {
+    Container(comm_gateway, "Communication API Gateway", "Nginx", "API Gateway для коммуникаций")
+    Container(chat_service, "Chat Service", "Node.js", "Управление чатами и сообщениями")
+    Container(discussion_service, "Discussion Service", "Node.js", "Управление обсуждениями")
+    Container(video_service, "Video Service", "Node.js", "Видеоконференции")
+    ContainerDb(chat_db, "Communication Database", "MongoDB", "Сообщения и метаданные чатов")
+    ContainerDb(comm_cache, "Communication Cache", "Redis", "Кэш для real-time коммуникаций")
+  }
+  
+  Container(notification_service, "Notification Service", "Node.js", "Управление уведомлениями")
+  Container(audit_service, "Audit Service", "Node.js", "Журналирование действий пользователей")
+  
+  ContainerQueue(message_queue, "Message Queue", "RabbitMQ", "Асинхронная обработка уведомлений и событий")
+  
+  ContainerDb(audit_db, "Audit Database", "PostgreSQL", "Журнал действий пользователей")
+}
+
+System_Boundary(external_systems, "External Systems") {
+  Container_Ext(email_service, "Email Service", "SMTP", "Отправка email уведомлений")
+  Container_Ext(file_storage, "Cloud Storage", "S3", "Облачное хранилище файлов")
+  Container_Ext(external_calendars, "External Calendars", "API", "Внешние календарные сервисы")
+  Container_Ext(oauth_providers, "OAuth Providers", "OAuth 2.0", "Поставщики аутентификации")
+}
+
+Rel(project_manager, web_app, "Использует")
+Rel(team_member, web_app, "Использует")
+Rel(web_app, main_api_gateway, "API вызовы", "HTTPS")
+Rel(main_api_gateway, user_org_gateway, "Маршрутизирует запросы")
+Rel(main_api_gateway, project_gateway, "Маршрутизирует запросы")
+Rel(main_api_gateway, document_service, "Маршрутизирует запросы")
+Rel(main_api_gateway, meeting_service, "Маршрутизирует запросы")
+Rel(main_api_gateway, comm_gateway, "Маршрутизирует запросы")
+Rel(main_api_gateway, calendar_service, "Маршрутизирует запросы")
+Rel(user_org_gateway, user_service, "Маршрутизирует")
+Rel(user_org_gateway, organization_service, "Маршрутизирует")
+Rel(user_org_gateway, auth_service, "Маршрутизирует")
+Rel(user_service, user_org_db, "Читает/пишет")
+Rel(organization_service, user_org_db, "Читает/пишет")
+Rel(auth_service, user_org_db, "Читает данные для авторизации")
+Rel(project_gateway, project_service, "Маршрутизирует")
+Rel(project_gateway, task_service, "Маршрутизирует")
+Rel(project_service, project_db, "Читает/пишет")
+Rel(task_service, project_db, "Читает/пишет")
+Rel(document_service, document_db, "Читает/пишет метаданные")
+Rel(document_service, file_storage, "Сохраняет/получает файлы")
+Rel(meeting_service, meeting_db, "Читает/пишет")
+Rel(calendar_service, meeting_db, "Читает/пишет")
+Rel(calendar_service, external_calendars, "Синхронизирует события")
+Rel(comm_gateway, chat_service, "Маршрутизирует")
+Rel(comm_gateway, discussion_service, "Маршрутизирует")
+Rel(comm_gateway, video_service, "Маршрутизирует")
+Rel(chat_service, chat_db, "Читает/пишет")
+Rel(discussion_service, chat_db, "Читает/пишет")
+Rel(video_service, chat_db, "Читает/пишет")
+Rel(chat_service, comm_cache, "Кэширует данные")
+Rel(discussion_service, comm_cache, "Кэширует данные")
+Rel(video_service, comm_cache, "Кэширует данные")
+Rel(project_service, message_queue, "Отправляет события")
+Rel(task_service, message_queue, "Отправляет события")
+Rel(meeting_service, message_queue, "Отправляет события")
+Rel(chat_service, message_queue, "Отправляет события")
+Rel(message_queue, notification_service, "Обрабатывает события")
+Rel(notification_service, email_service, "Отправляет email")
+Rel(audit_service, audit_db, "Логирует действия")
+Rel(message_queue, audit_service, "Отправляет события для аудита")
+Rel(auth_service, oauth_providers, "Аутентификация", "OAuth 2.0")
+
+@enduml
