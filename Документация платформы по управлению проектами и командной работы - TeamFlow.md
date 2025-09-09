@@ -518,12 +518,14 @@
 <br/><br/>
 
 ## Моделирование бизнес-процесса создания задачи в проекте на платформе TeamFlow в нотации BPMN:
-![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/Картинка%20BPMN.png)
+![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/Визуализация-BPMN.png)
+
+### [Ссылка на просмотр кода BPMN-диаграммы](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20BPMN)
+
 
 <br/><br/>
 
 ## Моделирование структуры Базы Данных:
-### Ссылка на просмотр изображения ER-диаграммы:
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/ER-диаграмма.png)
 
 ### [Ссылка на просмотр кода ER-диаграммы в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20ERD)
@@ -802,13 +804,11 @@
 
 ## Моделирование архитектуры системы:
 ### С4 - Диаграмма контекста
-### Ссылка на просмотр изображения С4 Контекста:
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/C4%20Context.png)
 
 ### [Ссылка на просмотр кода С4 Контекста в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Context)
 
 ### С4 - Диаграмма контейнера
-### Ссылка на просмотр изображения С4 Контейнера:
 ![Image](https://raw.githubusercontent.com/PavelMahnyuk/BA-Practice/refs/heads/main/C4%20Container.png)
 
 ### [Ссылка на просмотр кода С4 Контейнера в PlantUML](https://github.com/PavelMahnyuk/BA-Practice/blob/main/Код%20UML%20Container)
